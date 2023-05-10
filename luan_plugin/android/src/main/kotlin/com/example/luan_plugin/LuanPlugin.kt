@@ -9,6 +9,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.util.Log
 import androidx.annotation.NonNull
+import com.example.luan_plugin.view.FirstWidgetFactory
 import io.flutter.embedding.android.FlutterActivity
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -25,6 +26,10 @@ class LuanPlugin : FlutterPlugin, MethodCallHandler {
     private var binding: FlutterPlugin.FlutterPluginBinding? = null
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         binding = flutterPluginBinding
+        flutterPluginBinding.platformViewRegistry.registerViewFactory(
+            "plugins/first_widget",
+            FirstWidgetFactory(flutterPluginBinding.binaryMessenger)
+        )
         eventChanel = EventChannel(flutterPluginBinding.binaryMessenger, CHARGING_CHANNEL)
 
         eventChanel.setStreamHandler(

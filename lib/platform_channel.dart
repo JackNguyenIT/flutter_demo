@@ -6,6 +6,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:luan_plugin/widget/first.dart';
 
 class PlatformChannel extends StatefulWidget {
   const PlatformChannel({super.key});
@@ -28,7 +29,8 @@ class _PlatformChannelState extends State<PlatformChannel> {
   Future<void> _getBatteryLevel() async {
     String batteryLevel;
     try {
-      final int? result = await methodChannel.invokeMethod('getBatteryLevel',"hehe");
+      final int? result =
+          await methodChannel.invokeMethod('getBatteryLevel', "hehe");
       batteryLevel = 'Battery level: $result%.';
     } on PlatformException catch (e) {
       if (e.code == 'NO_BATTERY') {
@@ -45,7 +47,9 @@ class _PlatformChannelState extends State<PlatformChannel> {
   @override
   void initState() {
     super.initState();
-    eventStream = eventChannel.receiveBroadcastStream("Luan").listen(_onEvent, onError: _onError);
+    eventStream = eventChannel
+        .receiveBroadcastStream("Luan")
+        .listen(_onEvent, onError: _onError);
   }
 
   @override
@@ -54,6 +58,7 @@ class _PlatformChannelState extends State<PlatformChannel> {
     eventStream = null;
     super.dispose();
   }
+
   void _onEvent(Object? event) {
     setState(() {
       print("object $event");
@@ -77,6 +82,10 @@ class _PlatformChannelState extends State<PlatformChannel> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Card(child: SizedBox(height: 200, child: FirstWidget())),
+              ),
               Text(_batteryLevel, key: const Key('Battery level label')),
               Padding(
                 padding: const EdgeInsets.all(16.0),

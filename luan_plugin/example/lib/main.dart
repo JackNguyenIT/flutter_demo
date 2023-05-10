@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:luan_plugin/luan_plugin.dart';
+import 'package:luan_plugin/widget/first.dart';
 
 void main() {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   final _luanPlugin = LuanPlugin();
 
   static const EventChannel eventChannel =
-      EventChannel('CHARGING_CHANNEL');
+      EventChannel('com.example.test.hello/charging');
 
   @override
   void initState() {
@@ -69,7 +70,17 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            children: [
+              const Card(
+                child: SizedBox(
+                  height: 200,
+                  child: FirstWidget(),
+                ),
+              ),
+              Text('Running on: $_platformVersion\n'),
+            ],
+          ),
         ),
       ),
     );
