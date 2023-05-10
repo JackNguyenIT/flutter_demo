@@ -94,7 +94,7 @@ packages:
   luan_plugin:
     dependency: "direct main"
     description:
-      path: luan_plugin
+      path: ".."
       relative: true
     source: path
     version: "0.0.1"
