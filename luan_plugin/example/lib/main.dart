@@ -79,6 +79,12 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
               Text('Running on: $_platformVersion\n'),
+              const Card(
+                child: SizedBox(
+                  height: 200,
+                  child: FirstWidget(),
+                ),
+              ),
             ],
           ),
         ),

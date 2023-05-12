@@ -20,6 +20,8 @@ class FirstWidget extends StatefulWidget {
 }
 
 class _FirstWidgetState extends State<FirstWidget> {
+  FirstWidgetController? controller;
+
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -33,17 +35,45 @@ class _FirstWidgetState extends State<FirstWidget> {
   }
 
   void _onPlatformViewCreated(int id) {
-    widget.onFirstWidgetWidgetCreated?.call(FirstWidgetController._(id));
+    controller = FirstWidgetController._(id);
+    widget.onFirstWidgetWidgetCreated?.call(controller!);
+  }
+
+  @override
+  void dispose() {
+    controller?.close();
+    super.dispose();
   }
 }
 
 class FirstWidgetController {
   FirstWidgetController._(int id)
-      : _channel = MethodChannel('plugins/first_widget_$id');
+      : _channel = MethodChannel('plugins/first_widget_$id'),
+        _eventChannel = EventChannel('plugins/first_widget_event_$id') {
+    print("luan init $id");
+    eventStream = _eventChannel
+        .receiveBroadcastStream("Luan")
+        .listen(_onEvent, onError: _onError);
+  }
 
   final MethodChannel _channel;
+  final EventChannel _eventChannel;
+  StreamSubscription? eventStream;
 
   Future<void> ping() async {
     return _channel.invokeMethod('ping');
+  }
+
+  void _onEvent(Object? event) {
+    print("First widget onEven $event");
+  }
+
+  void _onError(Object error) {
+    print("First widget _onError $error");
+  }
+
+  void close() {
+    eventStream?.cancel();
+    eventStream = null;
   }
 }
